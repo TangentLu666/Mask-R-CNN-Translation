@@ -111,7 +111,7 @@ Mask R-CNN 的作者推荐一个叫 ROIAlign 的方法，对特征图在不同�
 ![效果图](/images/1_lAP6vX1tLQaxFn6XGEQ32g.gif)
 
 #### 1. 训练数据集
-一般来说，我会从搜索包含我需要的物体的公开数据集开始。但在这个示例中，我想要把这个过程都记录夏日，以展示如何从零开始中构建一个数据集。
+一般情况下我会直接去找合适的公共数据集。但为了展示数据集构建的整个过程，这一次我会从零开始并记录下整个过程。
 我从 `flickr` 中搜索关于气球的图片，并且这些图片是限定在"商业用户 & 允许修改"的许可证下。这个搜索结果得到的图片已经能满足我的需求了。我一共挑选了75张图片，并且它们分成训练集以及验证集。找图片是挺简单的事情，但标注图片才是艰难的部分。
 ![search](./images/1_Q4tCdhwrklvJLM9zn5aDhg.png)
 等等，难道我们不是应该需要上百万的图片去训练深度学习模型的吗？有时候，你确实需要如此，但是更多情况下，你并不需要这么多图片。我主要依靠下面两点来显著地降低训练要求。
@@ -155,7 +155,7 @@ class BalloonDataset(utils.Dataset):
 `load_balloons`是用来读取 `JSON`文件，提取标注数据，以及递归地调用`add_class` 和`add_image`内部方法以构建数据集。
 
 `load_mask` 会通过绘制多边形，为图片中每个气球生成 `bitmap` 掩码。
-load_mask generates bitmap masks for every object in the image by drawing the polygons.
+
 `image_reference`只是简单地为每张图片返回作为一个唯一标识的字符串，目的是为了 debug 。这个字符串其实就是图片文件名。
 
 你也许注意到了我的类中没有包含加载图片或返回边界框的方法。其实用于加载图片的`load_image`方法已经在基类`Dataset`中有实现了。而边界框是动态地从掩码中生成的。
